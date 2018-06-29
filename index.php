@@ -3,8 +3,8 @@
 require 'vendor/autoload.php';
 
 $session = new SpotifyWebAPI\Session(
-    'CLIENT_ID',
-    'CLIENT_SECRET',
+    '626f17554aa54f2394826481c517e527',
+    '693a444bbbc74e38ad3af0c8a39b1c36',
     'http://localhost:8000/callback.php'
 );
 

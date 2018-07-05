@@ -14,6 +14,7 @@ if (isset($_GET['code'])) {
     $session->requestAccessToken($_GET['code']);
     $api->setAccessToken($session->getAccessToken());
 
+    header('Content-type: application/json');
     print_r($api->getUserPlaylists('me'));
 } else {
     $options = [

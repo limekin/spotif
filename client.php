@@ -13,8 +13,19 @@ $accessToken = $session->getAccessToken();
 $api = new SpotifyWebAPI\SpotifyWebAPI();
 $api->setAccessToken($accessToken);
 
-header('Content-type: application/json');
-echo $accessToken;
-echo json_encode(
-    $api->search('roadhouse', 'track')
-);
+$response = $api->search('attention', 'track');
+$tracks = $response->tracks;
+$items = $tracks->items;
+
+?>
+
+<?php foreach($items as $item): ?>
+    <?php if(! $item->preview_url) continue; ?>
+
+    <h4><?php echo $item->name; ?></h4>
+    <audio controls>
+    <source src="<?php echo $item->preview_url; ?>" type="audio/mpeg">
+    Your browser does not support the audio element.
+    </audio>
+    <br/>
+<?php endforeach; ?>

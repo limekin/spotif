@@ -13,11 +13,31 @@ $accessToken = $session->getAccessToken();
 $api = new SpotifyWebAPI\SpotifyWebAPI();
 $api->setAccessToken($accessToken);
 
-$response = $api->search('shape of you', 'track');
+$limit = 5;
+$page = (isset($_GET['page']) ? $_GET['page'] : 1);
+$offset = ($page-1) * $limit;
+
+
+$response = $api->search('shape of you', 'track', array(
+    'limit' => $limit,
+    'offset' => $offset
+));
 $tracks = $response->tracks;
 $items = $tracks->items;
 
+// Setup pagination links.
+$pages = $tracks->total / $limit;
+if($tracks->total % $limit > 0)
+    $pages += 1;
+
 ?>
+
+<?php // Show the pagination links in here. ?>
+<ul>
+    <?php for($i=1; $i<$pages; ++$i): ?>
+        <a href='client.php?page=<?php echo $i; ?>'><?php echo $i; ?></a>
+    <?php endfor; ?>
+</ul>
 
 <?php foreach($items as $item): ?>
     <?php if(! $item->preview_url) continue; ?>
@@ -37,3 +57,5 @@ $items = $tracks->items;
     </audio>
     <br/>
 <?php endforeach; ?>
+
+<?
